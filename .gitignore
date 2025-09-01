@@ -134,3 +134,37 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+
+# Python
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+
+# Node / frontend
+client/node_modules/
+node_modules/
+dist/
+build/
+.next/
+.cache/
+.vercel/
+coverage/
+
+# Env & local data
+.env
+.env.*.local
+*.db
+*.sqlite*
+*.pid
+*.log
+
+# OS / editor
+.DS_Store
+Thumbs.db
