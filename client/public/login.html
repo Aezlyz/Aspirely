@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aspirely • Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f1f5f9; /* light slate background */
+    }
+    .form-panel {
+      transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+    }
+    .hidden-panel {
+      transform: translateX(100%);
+      opacity: 0;
+      position: absolute;
+    }
+    .active-panel {
+      transform: translateX(0);
+      opacity: 1;
+      position: relative;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center">
+
+  <div class="w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden relative p-10">
+    <div class="text-center mb-8">
+      <!-- "Aspirely" now in blue -->
+      <h1 class="text-4xl font-semibold text-[#2B6CB0] mb-2">Aspirely</h1>
+      <p class="text-gray-600 text-lg">Your Personalized Career Advisor</p>
+    </div>
+
+    <div class="flex justify-center space-x-4 mb-8">
+      <button onclick="showPanel('login')" id="loginBtn" class="px-6 py-2 text-white bg-[#F6AD55] rounded-full font-medium shadow-md">Login</button>
+      <button onclick="showPanel('signup')" id="signupBtn" class="px-6 py-2 text-[#F6AD55] bg-orange-100 rounded-full font-medium shadow-md">Sign Up</button>
+    </div>
+
+    <div id="loginPanel" class="form-panel active-panel">
+      <form onsubmit="redirectToHomepage(); return false;">
+        <div class="mb-5">
+          <label class="block text-left text-gray-700 mb-1">Username</label>
+          <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#F6AD55]" placeholder="Enter your username" required />
+        </div>
+        <div class="mb-6">
+          <label class="block text-left text-gray-700 mb-1">Password</label>
+          <input type="password" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#F6AD55]" placeholder="Enter your password" required />
+        </div>
+        <button type="submit" class="w-full bg-[#F6AD55] text-white py-3 rounded-xl text-lg font-medium hover:bg-orange-500 transition-all shadow-lg">Login</button>
+      </form>
+    </div>
+
+    <div id="signupPanel" class="form-panel hidden-panel">
+      <form onsubmit="handleSignup(event)">
+        <div class="mb-5">
+          <label class="block text-left text-gray-700 mb-1">Full Name</label>
+          <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#F6AD55]" placeholder="Your full name" required />
+        </div>
+        <div class="mb-5">
+          <label class="block text-left text-gray-700 mb-1">Username</label>
+          <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#F6AD55]" placeholder="Choose a username" required />
+        </div>
+        <div class="mb-6">
+          <label class="block text-left text-gray-700 mb-1">Password</label>
+          <input type="password" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#F6AD55]" placeholder="Create a password" required />
+        </div>
+        <button type="submit" class="w-full bg-[#F6AD55] text-white py-3 rounded-xl text-lg font-medium hover:bg-orange-500 transition-all shadow-lg">Create Account</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function showPanel(panel) {
+      const loginPanel = document.getElementById('loginPanel');
+      const signupPanel = document.getElementById('signupPanel');
+      const loginBtn = document.getElementById('loginBtn');
+      const signupBtn = document.getElementById('signupBtn');
+
+      if (panel === 'login') {
+        loginPanel.classList.add('active-panel');
+        loginPanel.classList.remove('hidden-panel');
+        signupPanel.classList.remove('active-panel');
+        signupPanel.classList.add('hidden-panel');
+        loginBtn.classList.add('bg-[#F6AD55]', 'text-white');
+        loginBtn.classList.remove('bg-orange-100', 'text-[#F6AD55]');
+        signupBtn.classList.add('bg-orange-100', 'text-[#F6AD55]');
+        signupBtn.classList.remove('bg-[#F6AD55]', 'text-white');
+      } else {
+        signupPanel.classList.add('active-panel');
+        signupPanel.classList.remove('hidden-panel');
+        loginPanel.classList.remove('active-panel');
+        loginPanel.classList.add('hidden-panel');
+        signupBtn.classList.add('bg-[#F6AD55]', 'text-white');
+        signupBtn.classList.remove('bg-orange-100', 'text-[#F6AD55]');
+        loginBtn.classList.add('bg-orange-100', 'text-[#F6AD55]');
+        loginBtn.classList.remove('bg-[#F6AD55]', 'text-white');
+      }
+    }
+
+    function redirectToHomepage() {
+      window.location.href = "homepage.html";
+    }
+
+    function handleSignup(event) {
+      event.preventDefault();
+      alert("Account created successfully!");
+      showPanel('login');
+    }
+
+    document.querySelectorAll('input[type="password"]').forEach((passwordInput) => {
+      const wrapper = passwordInput.parentElement;
+      const toggle = document.createElement('div');
+      toggle.className = 'mt-2 flex items-center space-x-2 text-sm text-gray-600';
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.className = 'form-checkbox h-4 w-4 text-[#F6AD55]';
+      const label = document.createElement('label');
+      label.textContent = 'Show Password';
+      toggle.appendChild(checkbox);
+      toggle.appendChild(label);
+      wrapper.appendChild(toggle);
+      checkbox.addEventListener('change', () => {
+        passwordInput.type = checkbox.checked ? 'text' : 'password';
+      });
+    });
+  </script>
+
+</body>
+</html>

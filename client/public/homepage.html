@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aspirely Dashboard</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brandOrange: '#F6AD55',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Fonts & Icons -->
+  <link href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #EDF2F7;
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+
+<body class="text-gray-900">
+
+
+  <!-- Navbar -->
+  <nav class="fixed top-0 w-full bg-white shadow-md z-50">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex flex-col leading-tight">
+        <div class="text-2xl font-bold text-[#2B6CB0]">Aspirely</div>
+        <div class="text-sm text-[#F6AD55] font-medium">Careers with Clarity</div>
+      </div>
+      <ul class="flex space-x-4 text-[#1A202C]">
+        <li>
+          <a href="#" class="flex items-center space-x-1 px-3 py-2 rounded-md hover:shadow-md transition-shadow duration-200">
+            <i class="ph ph-house"></i><span>Home</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="flex items-center space-x-1 px-3 py-2 rounded-md hover:shadow-md transition-shadow duration-200">
+            <i class="ph ph-trend-up"></i><span>Trending Careers</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="flex items-center space-x-1 px-3 py-2 rounded-md hover:shadow-md transition-shadow duration-200">
+            <i class="ph ph-book"></i><span>Exam Prep</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="flex items-center space-x-1 px-3 py-2 rounded-md hover:shadow-md transition-shadow duration-200">
+            <i class="ph ph-lightbulb"></i><span>Career Advisor</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="flex items-center space-x-1 px-3 py-2 rounded-md hover:shadow-md transition-shadow duration-200">
+            <i class="ph ph-clipboard-text"></i><span>Your Profile</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="flex items-center space-x-1 px-3 py-2 rounded-md hover:shadow-md transition-shadow duration-200">
+            <i class="ph ph-info"></i><span>About</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="flex items-center space-x-1 px-3 py-2 rounded-md hover:shadow-md transition-shadow duration-200">
+            <i class="ph ph-sign-out"></i><span>Logout</span>
+          </a>
+        </li>
+      </ul>
+      
+    </div>
+  </nav>
+
+ <!-- Hero Section -->
+<section class="pt-40 pb-24 px-4 text-center bg-gradient-to-r from-[#FFFFFF] via-[#FFF9F0] to-[#FDF6EC]">
+    <h1 class="text-4xl font-bold mb-4 text-[#1A202C]">Discover Your Path with Aspirely</h1>
+    <p class="text-lg mb-6 text-[#2D3748]">Take our career quiz to find courses, colleges, and careers tailored just for you.</p>
+    <a href="quiz.html" class="bg-[#F6AD55] text-white font-semibold py-3 px-6 rounded-full shadow-md hover:bg-orange-500 hover:shadow-lg transition duration-300">
+      Start Career Quiz
+    </a>
+  </section>
+  
+  
+  <!-- Feature Highlights Section -->
+<section class="bg-[#F7FAFC] py-20 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+  
+        <!-- Feature 1 -->
+        <div class="bg-white p-6 rounded-xl border border-gray-200 hover:shadow-md transition-shadow">
+          <div class="text-[#2B6CB0] mb-4">
+            <i class="ph ph-compass text-3xl"></i>
+          </div>
+          <h3 class="text-lg font-semibold text-[#1A202C] mb-2">Personalized Career Paths</h3>
+          <p class="text-sm text-gray-600">Aspirely analyzes your interests and stream to map career paths just for you.</p>
+        </div>
+  
+        <!-- Feature 2 -->
+        <div class="bg-white p-6 rounded-xl border border-gray-200 hover:shadow-md transition-shadow">
+          <div class="text-[#2B6CB0] mb-4">
+            <i class="ph ph-lightbulb-filament text-3xl"></i>
+          </div>
+          <h3 class="text-lg font-semibold text-[#1A202C] mb-2">Smart Career Quiz</h3>
+          <p class="text-sm text-gray-600">A quiz that understands your goals and suggests ideal careers and exams.</p>
+        </div>
+  
+        <!-- Feature 3 -->
+        <div class="bg-white p-6 rounded-xl border border-gray-200 hover:shadow-md transition-shadow">
+          <div class="text-[#2B6CB0] mb-4">
+            <i class="ph ph-graduation-cap text-3xl"></i>
+          </div>
+          <h3 class="text-lg font-semibold text-[#1A202C] mb-2">Top Colleges & Exams</h3>
+          <p class="text-sm text-gray-600">Explore entrance exams and colleges based on your career route and stream.</p>
+        </div>
+  
+        <!-- Feature 4 -->
+        <div class="bg-white p-6 rounded-xl border border-gray-200 hover:shadow-md transition-shadow">
+          <div class="text-[#2B6CB0] mb-4">
+            <i class="ph ph-file-text text-3xl"></i>
+          </div>
+          <h3 class="text-lg font-semibold text-[#1A202C] mb-2">Detailed Reports</h3>
+          <p class="text-sm text-gray-600">Download visually rich, insightful reports with curated suggestions and tips.</p>
+        </div>
+  
+      </div>
+    </div>
+  </section>
+  
+<!-- FAQ Section -->
+<section class="bg-white py-14 px-4">
+    <h2 class="text-2xl font-semibold text-center mb-8 text-[#1A202C]">Frequently Asked Questions</h2>
+    <div class="max-w-3xl mx-auto space-y-4" id="faq-section">
+  
+      <!-- FAQ Item -->
+      <div class="bg-[#F7FAFC] p-4 rounded-md shadow-sm cursor-pointer faq-item">
+        <div class="flex justify-between items-center">
+          <h3 class="text-lg font-medium text-[#1A202C]">What is Aspirely?</h3>
+          <span class="toggle-icon text-[#F6AD55] text-xl font-bold">+</span>
+        </div>
+        <p class="answer text-sm text-[#2D3748] mt-2 hidden leading-relaxed">
+          Aspirely is your personalized career companion. It helps you explore courses, colleges, and career paths that align with your goals and preferences.
+        </p>
+      </div>
+  
+      <div class="bg-[#F7FAFC] p-4 rounded-md shadow-sm cursor-pointer faq-item">
+        <div class="flex justify-between items-center">
+          <h3 class="text-lg font-medium text-[#1A202C]">How does the career quiz work?</h3>
+          <span class="toggle-icon text-[#F6AD55] text-xl font-bold">+</span>
+        </div>
+        <p class="answer text-sm text-[#2D3748] mt-2 hidden leading-relaxed">
+          The quiz gathers your interests, preferences, and academic background to suggest suitable career paths and entrance exams.
+        </p>
+      </div>
+  
+      <div class="bg-[#F7FAFC] p-4 rounded-md shadow-sm cursor-pointer faq-item">
+        <div class="flex justify-between items-center">
+          <h3 class="text-lg font-medium text-[#1A202C]">Is Aspirely free to use?</h3>
+          <span class="toggle-icon text-[#F6AD55] text-xl font-bold">+</span>
+        </div>
+        <p class="answer text-sm text-[#2D3748] mt-2 hidden leading-relaxed">
+          Yes, Aspirely is completely free. You can explore career options, colleges, and reports without any charges.
+        </p>
+      </div>
+  
+      <div class="bg-[#F7FAFC] p-4 rounded-md shadow-sm cursor-pointer faq-item">
+        <div class="flex justify-between items-center">
+          <h3 class="text-lg font-medium text-[#1A202C]">Can I retake the quiz or update my preferences?</h3>
+          <span class="toggle-icon text-[#F6AD55] text-xl font-bold">+</span>
+        </div>
+        <p class="answer text-sm text-[#2D3748] mt-2 hidden leading-relaxed">
+          Absolutely. You can retake the quiz at any time or edit your answers as your interests evolve.
+        </p>
+      </div>
+  
+      <div class="bg-[#F7FAFC] p-4 rounded-md shadow-sm cursor-pointer faq-item">
+        <div class="flex justify-between items-center">
+          <h3 class="text-lg font-medium text-[#1A202C]">Does Aspirely help with exam and college information too?</h3>
+          <span class="toggle-icon text-[#F6AD55] text-xl font-bold">+</span>
+        </div>
+        <p class="answer text-sm text-[#2D3748] mt-2 hidden leading-relaxed">
+          Yes. Aspirely provides guidance on entrance exams like CUET, JEE, NEET, CLAT, etc., and recommends colleges based on your chosen path and eligibility.
+        </p>
+      </div>
+  
+      <div class="bg-[#F7FAFC] p-4 rounded-md shadow-sm cursor-pointer faq-item">
+        <div class="flex justify-between items-center">
+          <h3 class="text-lg font-medium text-[#1A202C]">What if my question isn’t listed here?</h3>
+          <span class="toggle-icon text-[#F6AD55] text-xl font-bold">+</span>
+        </div>
+        <p class="answer text-sm text-[#2D3748] mt-2 hidden leading-relaxed">
+          You can <a href="mailto:support@aspirely.in" class="text-[#2B6CB0] underline">ask your question</a> and we’ll get back to you shortly!
+        </p>
+      </div>
+  
+    </div>
+  </section>
+  
+  
+
+  <!-- Scroll to Top Button -->
+  <button id="scrollTopBtn" class="hidden fixed bottom-6 right-6 bg-[#F6AD55] text-white p-3 rounded-full shadow-lg hover:bg-orange-400 transition">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+    </svg>
+  </button>
+
+  <!-- Footer -->
+  <footer class="bg-white py-6 text-center text-sm text-gray-500">
+    © 2025 Aspirely. All rights reserved.
+  </footer>
+
+  <!-- Scroll & FAQ Script -->
+  <script>
+    // Scroll to Top
+    const scrollTopBtn = document.getElementById("scrollTopBtn");
+    window.addEventListener("scroll", () => {
+      scrollTopBtn.classList.toggle("hidden", window.pageYOffset < 200);
+    });
+    scrollTopBtn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    // FAQ Toggle
+    document.querySelectorAll('.faq-item').forEach(item => {
+      const icon = item.querySelector('.toggle-icon');
+      const answer = item.querySelector('.answer');
+
+      item.addEventListener('click', () => {
+        const isOpen = !answer.classList.contains('hidden');
+        document.querySelectorAll('.answer').forEach(a => a.classList.add('hidden'));
+        document.querySelectorAll('.toggle-icon').forEach(i => i.textContent = '+');
+        if (!isOpen) {
+          answer.classList.remove('hidden');
+          icon.textContent = '–';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

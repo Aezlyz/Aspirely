@@ -1,0 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+:root {
+  --brand-charcoal: #1A202C;
+  --brand-blue: #2B6CB0;
+  --brand-gray: #EDF2F7;
+  --brand-orange: #F6AD55;
+}
+body { font-family: Inter, system-ui, sans-serif; }
+.shadow-soft { box-shadow: 0 10px 30px rgba(16,24,40,.06); }

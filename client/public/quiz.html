@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aspirely — Career Quiz</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/phosphor-icons"></script>
+  <style>
+    @keyframes fadeIn { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes slideUp{ from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+    .animate-fadeIn{ animation:fadeIn .6s ease forwards }
+    .animate-slideUp{ animation:slideUp .45s ease forwards }
+  </style>
+</head>
+
+<body class="min-h-screen bg-[#F7FAFC] relative">
+  <!-- Aurora background (matches homepage vibe) -->
+  <div aria-hidden class="absolute inset-0 -z-10 pointer-events-none"
+       style="background:
+        radial-gradient(1200px 460px at 15% -10%, rgba(43,108,176,.18), transparent 60%),
+        radial-gradient(1100px 420px at 85% -10%, rgba(246,173,85,.22), transparent 60%),
+        linear-gradient(180deg, #F7FAFC 0%, #F5F7FB 60%, #EEF2F7 100%);">
+  </div>
+
+  <main class="max-w-5xl mx-auto px-5 pt-12 pb-24">
+    <div class="mx-auto w-full max-w-3xl rounded-2xl border border-gray-200 bg-white shadow-[0_18px_42px_-24px_rgba(2,6,23,.25)] overflow-hidden">
+      <!-- Brand header band -->
+      <div class="p-6 text-center text-white"
+           style="background:linear-gradient(135deg,#2B6CB0 0%,#2B6CB0 55%,#F6AD55 120%);">
+        <h1 class="text-2xl md:text-3xl font-extrabold">Career Path Quiz</h1>
+        <p class="opacity-90 mt-1">Find out which career best matches your interests</p>
+      </div>
+
+      <!-- QUIZ -->
+      <section id="quiz-area" class="p-6">
+        <div id="question-box" class="mb-6"></div>
+        <div id="options-box" class="space-y-3"></div>
+        <div id="progress" class="mt-4 text-sm text-gray-500"></div>
+      </section>
+
+      <!-- RESULT -->
+      <section id="result-area" class="hidden p-6"></section>
+    </div>
+  </main>
+
+  <script>
+    /* ----------------------- CONFIG ----------------------- */
+    const API_BASE = "http://127.0.0.1:8000";
+    const MIN_QUESTIONS = 12;
+
+    // Neutral padding questions to reach 12 if the decision tree ends early
+    const EXTRA_QUESTIONS = [
+      { id:"pref_team_style", text:"Do you prefer working alone or in teams?",
+        options:[ {label:"Mostly alone",tags:["pref:solo"]},{label:"Mostly in teams",tags:["pref:teamwork"]},{label:"Depends on the task",tags:["pref:flex"]} ]},
+      { id:"pref_env", text:"What environment energizes you most?",
+        options:[ {label:"Fast-paced, dynamic",tags:["pref:fast"]},{label:"Calm, research-focused",tags:["pref:calm"]},{label:"Client-facing, people-heavy",tags:["pref:client"]} ]},
+      { id:"pref_subject", text:"Pick a subject area you enjoy:",
+        options:[ {label:"Math & Logic",tags:["pref:math"]},{label:"Writing & Communication",tags:["pref:writing"]},{label:"Design & Creativity",tags:["pref:design"]} ]},
+      { id:"pref_risk", text:"How do you feel about risk?",
+        options:[ {label:"I prefer stability",tags:["pref:stable"]},{label:"I like some risk",tags:["pref:balanced"]},{label:"I’m comfortable with high risk",tags:["pref:risky"]} ]},
+      { id:"pref_schedule", text:"Your ideal schedule?",
+        options:[ {label:"Structured 9–5",tags:["pref:structured"]},{label:"Flexible hours",tags:["pref:flexible"]},{label:"Project-based bursts",tags:["pref:bursts"]} ]},
+      { id:"pref_impact", text:"What motivates you most?",
+        options:[ {label:"Impact & meaning",tags:["pref:impact"]},{label:"Growth & challenge",tags:["pref:growth"]},{label:"Compensation",tags:["pref:comp"]} ]},
+      { id:"pref_tools", text:"Pick a toolset you enjoy:",
+        options:[ {label:"Spreadsheets & Data",tags:["pref:data"]},{label:"Presentations & People",tags:["pref:present"]},{label:"Code & Automation",tags:["pref:code"]} ]},
+      { id:"pref_commute", text:"Where do you prefer to work?",
+        options:[ {label:"On-site",tags:["pref:onsite"]},{label:"Hybrid",tags:["pref:hybrid"]},{label:"Remote",tags:["pref:remote"]} ]},
+    ];
+
+    /* ----------------------- DOM ----------------------- */
+    const questionBox = document.getElementById("question-box");
+    const optionsBox  = document.getElementById("options-box");
+    const quizArea    = document.getElementById("quiz-area");
+    const resultArea  = document.getElementById("result-area");
+    const progressEl  = document.getElementById("progress");
+
+    /* ----------------------- STATE ----------------------- */
+    let currentQuestion = null;
+    let answers = [];
+    let extraIndex = 0;
+    let pendingCareer = null; // if tree finishes early with a career
+
+    /* ----------------------- HELPERS ----------------------- */
+    function updateProgress() {
+      progressEl.textContent = `Answered ${answers.length} / ${MIN_QUESTIONS} questions`;
+    }
+
+    async function fetchQuestion(id = null) {
+      try {
+        const url = id ? `${API_BASE}/question/${id}` : `${API_BASE}/questions`;
+        const res = await fetch(url);
+        const data = await res.json();
+        if (id) renderQuestion(data);
+        else renderQuestion(data.questions[0]);
+      } catch (e) {
+        questionBox.innerHTML = `<p class="text-red-600">Failed to load questions. Is the API running?</p>`;
+      }
+    }
+
+    function renderQuestion(q) {
+      currentQuestion = q;
+      questionBox.innerHTML = `<h2 class="text-2xl font-semibold text-[#1A202C] animate-fadeIn">${q.text}</h2>`;
+      optionsBox.innerHTML = "";
+
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement("button");
+        btn.className = "w-full text-left px-5 py-3 bg-white border border-gray-300 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 opacity-0 animate-slideUp";
+        btn.style.animationDelay = `${i * 0.08}s`;
+        btn.innerHTML = `<span class="font-medium text-[#1A202C]">${opt.label}</span>`;
+        btn.onclick = () => handleTreeAnswer(opt);
+        optionsBox.appendChild(btn);
+      });
+
+      updateProgress();
+    }
+
+    function renderExtraQuestion() {
+      const q = EXTRA_QUESTIONS[extraIndex % EXTRA_QUESTIONS.length];
+      currentQuestion = q;
+      questionBox.innerHTML = `<h2 class="text-2xl font-semibold text-[#1A202C] animate-fadeIn">${q.text}</h2>`;
+      optionsBox.innerHTML = "";
+
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement("button");
+        btn.className = "w-full text-left px-5 py-3 bg-white border border-gray-300 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 opacity-0 animate-slideUp";
+        btn.style.animationDelay = `${i * 0.08}s`;
+        btn.innerHTML = `<span class="font-medium text-[#1A202C]">${opt.label}</span>`;
+        btn.onclick = () => handleExtraAnswer(opt);
+        optionsBox.appendChild(btn);
+      });
+
+      updateProgress();
+    }
+
+    function pushAnswer(qid, tags) {
+      answers.push({ question_id: qid, selected_tags: Array.isArray(tags) ? tags : [] });
+      updateProgress();
+    }
+
+    /* ----------------------- FLOW ----------------------- */
+    function handleTreeAnswer(option) {
+      pushAnswer(currentQuestion.question_id, option.tags || []);
+
+      if (option.next_question_id) {
+        fetchQuestion(option.next_question_id);
+        return;
+      }
+
+      if (option.career) pendingCareer = option.career;
+
+      if (answers.length < MIN_QUESTIONS) {
+        extraIndex = 0;
+        renderExtraQuestion();
+      } else {
+        submitAnswers();
+      }
+    }
+
+    function handleExtraAnswer(opt) {
+      pushAnswer(currentQuestion.id, opt.tags || []);
+      extraIndex++;
+      if (answers.length < MIN_QUESTIONS) renderExtraQuestion();
+      else submitAnswers();
+    }
+
+    async function submitAnswers() {
+      try {
+        const body = pendingCareer ? { answers, career: pendingCareer } : { answers };
+        const res = await fetch(`${API_BASE}/submit`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+        const data = await res.json();
+        showResult(data);
+      } catch (e) {
+        quizArea.classList.add("hidden");
+        resultArea.classList.remove("hidden");
+        resultArea.innerHTML = `<div class="text-red-600">Failed to submit answers: ${e.message}</div>`;
+      }
+    }
+
+    /* ----------------------- RESULT ----------------------- */
+    function showResult(data) {
+      // Persist for profile.jsx
+      try {
+        localStorage.setItem("aspirely:lastResult", JSON.stringify(data));
+        localStorage.setItem("aspirely:lastAnswers", JSON.stringify(answers));
+      } catch {}
+
+      const c = data?.explanation?.career_details || data?.career || data?.result || {};
+      const careerName = c.title || c.name || data?.explanation?.career || "Your Career Match";
+      const skills   = Array.isArray(c.skills) ? c.skills : [];
+      const edu      = Array.isArray(c.education) ? c.education : [];
+      const exams    = Array.isArray(c.entrance_exams) ? c.entrance_exams : [];
+      const colleges = Array.isArray(c.colleges) ? c.colleges : [];
+
+      const block = (title, content) => `
+        <div class="mb-4 bg-blue-50/60 border-l-4 border-[#2B6CB0] p-4 rounded-lg shadow-sm">
+          <h4 class="font-semibold text-[#2B6CB0] flex items-center gap-2">${title}</h4>
+          <div class="mt-2 text-sm text-[#1A202C]">${content}</div>
+        </div>
+      `;
+
+      resultArea.innerHTML = `
+        <div class="p-6 rounded-xl border border-gray-200 bg-white">
+          <h3 class="text-2xl font-extrabold mb-2 text-[#2B6CB0] flex items-center gap-2">
+            <i class="ph-briefcase text-[#2B6CB0]"></i> ${careerName}
+          </h3>
+          <p class="text-gray-700 mb-5">${c.description ?? ""}</p>
+
+          ${skills.length ? block("Skills Required", `<ul class="list-disc list-inside">${skills.map(s=>`<li>${s}</li>`).join("")}</ul>`) : ""}
+          ${edu.length ? block("Education Path", edu.join(", ")) : ""}
+          ${exams.length ? block("Entrance Exams", exams.join(", ")) : ""}
+          ${colleges.length ? block("Top Colleges", `<ul class="list-disc list-inside">${colleges.map(s=>`<li>${s}</li>`).join("")}</ul>`) : ""}
+
+          <div class="mt-7 flex flex-wrap gap-3">
+            <button onclick="restartQuiz()"
+              class="inline-flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-white shadow transition bg-[#2B6CB0] hover:bg-[#255ea3]">
+              <i class="ph-arrow-counter-clockwise"></i> Retake Quiz
+            </button>
+            <a href="/"
+              class="inline-flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-[#1A202C] shadow transition
+                     bg-gradient-to-r from-[#F6AD55] via-[#f7b86b] to-[#ffd29e] hover:brightness-95">
+              <i class="ph-house"></i> Home
+            </a>
+          </div>
+        </div>
+      `;
+
+      quizArea.classList.add("hidden");
+      resultArea.classList.remove("hidden");
+    }
+
+    function restartQuiz() {
+      answers = [];
+      pendingCareer = null;
+      extraIndex = 0;
+      resultArea.classList.add("hidden");
+      quizArea.classList.remove("hidden");
+      fetchQuestion();
+    }
+
+    // Start
+    fetchQuestion();
+  </script>
+</body>
+</html>

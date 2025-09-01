@@ -1,0 +1,24 @@
+# Node / Vite
+node_modules/
+dist/
+.vite/
+
+# Env files
+.env
+.env.*.local
+!.env.example
+
+# Logs / OS
+npm-debug.log*
+yarn-*.log*
+pnpm-*.log*
+.DS_Store
+Thumbs.db
+
+# Python backend (if present)
+.venv/
+venv/
+__pycache__/
+*.pyc
+instance/
+*.sqlite3
