@@ -299,7 +299,7 @@ export default function Quiz() {
   }
 
   function answerExtra() {
-    // extras disabled; keep no-op for compatibility
+    // extras disabled keep no-op for compatibility
     return;
   }
 
