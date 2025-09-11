@@ -299,3 +299,5 @@ def api_forgot_password(body: ForgotPasswordReq):
 @app.post("/api/auth/reset-password")
 def api_reset_password(body: ResetPasswordReq):
     return reset_password(body)
+
+#cd C:\Users\sarth\projects\Aspirely

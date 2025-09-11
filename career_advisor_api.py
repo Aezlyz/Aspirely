@@ -66,6 +66,6 @@ def submit_quiz(submission: Submission):
 #uvicorn career_advisor_api:app --reload
 
 
-#cd C:\Users\sarth\projects\aspirely1
+#cd C:\Users\sarth\projects\Aspirely
 #set QUESTIONS_JSON=C:\Users\sarth\projects\aspirely1\client\public\questions_trees_updated.json
 #python -m uvicorn career_advisor_api:app --reload --port 8000
