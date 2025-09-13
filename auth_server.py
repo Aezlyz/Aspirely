@@ -301,3 +301,4 @@ def api_reset_password(body: ResetPasswordReq):
     return reset_password(body)
 
 #cd C:\Users\sarth\projects\Aspirely
+#py -m uvicorn auth_server:app --reload --host 127.0.0.1 --port 8001
